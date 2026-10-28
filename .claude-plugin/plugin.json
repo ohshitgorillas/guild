@@ -1,0 +1,10 @@
+{
+  "name": "guild",
+  "version": "0.1.0",
+  "description": "The shared Claude Code subagent roster used by Relay and Gauntlet: architect, divvyer, lead, builders, test writers, reviewers and specialists.",
+  "author": {
+    "name": "ohshitgorillas",
+    "url": "https://github.com/ohshitgorillas"
+  },
+  "repository": "https://github.com/ohshitgorillas/guild"
+}

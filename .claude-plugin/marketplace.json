@@ -1,0 +1,15 @@
+{
+  "name": "guild",
+  "description": "Marketplace for Guild, the shared Claude Code subagent roster.",
+  "owner": {
+    "name": "ohshitgorillas",
+    "url": "https://github.com/ohshitgorillas"
+  },
+  "plugins": [
+    {
+      "name": "guild",
+      "source": "./",
+      "description": "The shared Claude Code subagent roster used by Relay and Gauntlet."
+    }
+  ]
+}
