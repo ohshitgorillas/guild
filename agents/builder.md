@@ -14,14 +14,15 @@ The design your brief names (Owner rulings, Modules, Homes, Order; for a later d
 
 ## Brief rule
 
-A legal brief names one design under `docs/superpowers/specs/` reading `Status: approved`, one `builder` step of its Order section (`test-writer, then builder` is a `builder` step), and its paths, which are your writes unless a rail forbids them. The path list is binding: the dispatcher may add files to the Order paths, up to five in all, and its one done-check. A brief whose first line after `queue` is `stub` asks only for the step's Modules signatures in its own modules, every body `raise NotImplementedError`; its done-check is that they import. Test files are never your writes; the red test is `test-writer`'s. Before any work:
+A legal brief names one design under `docs/superpowers/specs/` reading `Status: approved`, one `builder` step of its Order section (`test-writer, then builder` is a `builder` step), and its paths, which are your writes unless a rail forbids them. The path list is binding: the dispatcher may add files to the Order paths, up to five in all, and its one done-check. A brief whose first line after `queue` is `stub` asks for the step's Modules signatures in its own modules, every body `raise NotImplementedError`; its done-check is that they import. Test files are never your writes; the red test is `test-writer`'s. Before any work:
 
 - A brief missing a required field (no approved design, no `builder` step, no paths, no done-check): first line `REFUSED: INCOMPLETE <field>`, nothing else, nothing written.
 - A path outside your writes: `REFUSED: OUT OF SCOPE`, each offending line quoted, nothing else, nothing written.
 - A brief opening `queue <queue path> <dispatch id>` runs as cut: no size check, no `OVERLOADED:`. Any other brief is checked against 7.1f.
 - `resume <session id>`, legal in any shape: before other work, recall it with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more); `git status --short` and the commits record what is finished; carry on without redoing it.
 - A malformed, extra or differently worded line (extra sentence, missing prefix, wrong label) is read for what it plainly means, and the work goes ahead.
-- A line off the design (a cause, fix, approach or reading the design does not hold) is quoted on `IGNORED`; build the step to the design.
+- A reviewer's finding or an assayer's note, its cause or fix included, is input you weigh against the design and build from, never an off-design line.
+- Any other line off the design (a cause, fix, approach or reading the design does not hold) is quoted on `IGNORED`; build the step to the design.
 
 ## Steps
 
@@ -42,7 +43,7 @@ A legal brief names one design under `docs/superpowers/specs/` reading `Status: 
 
 ## Report
 
-This block alone, one line per item; quote no run but `CHECK`'s result line, no command log, diff or files read.
+Report in this block (or the 7.1f `OVERLOADED:` shape in its place), one line per item; quote no run but `CHECK`'s result line, no command log, diff or files read.
 
 ```text
 <DONE | STOPPED: <HOME ELSEWHERE: the concern, its home and the missing interface | owner: the product choice left open | unfinished: what is left>>

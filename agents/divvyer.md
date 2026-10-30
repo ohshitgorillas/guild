@@ -25,9 +25,9 @@ Nobody re-sizes your cut. Its only checks are Foreman's lint of a step-file draf
 
 ## The brief
 
-**`divvy`**: the one line `divvy <design path> -> <queue path>`. The design is under `docs/superpowers/specs/` and its own first line begins `Status: approved` (a companion's status never counts). The queue path ends `.md`.
+**`divvy`**: a line `divvy <design path> -> <queue path>`. The design is under `docs/superpowers/specs/` and its own first line begins `Status: approved` (a companion's status never counts). The queue path ends `.md`.
 
-**Section `recut`**: first line `recut <queue path ending .md> <section id | dispatch id>`, then the kept report verbatim (an overrun stop, a crash or an `OVERLOADED:` refusal), optionally `session <id>`, optionally `worktree <the lead's worktree path>`, and the work left, each line verbatim from that section or dispatch.
+**Section `recut`**: first line `recut <queue path ending .md> <section id | dispatch id>`, then the kept report verbatim (an overrun stop, a crash or an `OVERLOADED:` refusal), optionally `session <id>`, optionally `worktree <the lead's worktree path>`, the work left, each line verbatim from that section or dispatch, and any reviewer finding or assayer note.
 
 **`cut`**: Foreman's `brief.render` of a `forms.Cut`, in this order:
 
@@ -47,11 +47,11 @@ Foreman checks approval before sending a `cut`; you don't. A `cut` design inside
 recut <absolute queue path ending .toml> <group id> <stopped step id | - for a group-level stop>
 draft <absolute path ending .toml>
 kept <absolute path of the stop's kept report>
-ruling <the lead's recut words, verbatim>        only when the ruling is nonempty
+ruling <the lead's recut words, verbatim>        when the ruling is nonempty
 problem <one line control.install raised>        one line per entry, none or more
 ```
 
-**Steering** is a line outside the legal fields above that hands you your own judgment of the cut: any line that sets size, role, order or grouping (a section, group, merge or split among them). A brief with any steering line is never cut, not even its legal part: read or run nothing but the brief and the design's status lines, and return `REJECTED: STEERING`, then each offending line verbatim in double quotes on its own line, and nothing after.
+**Steering** is a line that hands you size, role, order or grouping (a section, group, merge or split among them), and nothing else is steering: a reviewer's finding or an assayer's note, its cause or fix included, is input you weigh. A brief with any steering line is never cut, not even its legal part: read or run nothing but the brief and the design's status lines, and return `REJECTED: STEERING`, then each offending line verbatim in double quotes on its own line, and nothing after.
 
 A malformed, extra or reworded line that sets none of these (an extra sentence, a missing or wrong prefix, a wrong label, a path inside a sentence) is read for its plain meaning and the work goes ahead; a `divvy` queue path not ending `.md` is still written as section text and named on `CHOSEN`. A brief missing a required field (on `divvy` the design or queue path; on a section `recut` the queue path, the section or dispatch id, or the kept report; on `cut` the `cut`, `design` or `draft` line; on a step `recut` the `recut`, `draft` or `kept` line) gets the first line `REFUSED: INCOMPLETE <field>`, and nothing is read or written.
 
