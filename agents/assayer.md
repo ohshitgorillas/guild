@@ -32,7 +32,7 @@ A near-legal line, such as a count off by blank lines, a missing prefix or a wro
 4. Choose one verdict:
    - **RETRY**: the cause lies outside the section's work and will not recur: an infrastructure fault, a kill or timeout with no sign the step outgrew its brief.
    - **RETRY-WITH-NOTE**: the section's own work causes it: a defect, a race in its code, a test that contradicts the design, or a `REJECTED:` brief that a re-send without the offending line fixes. `NOTE` names the cause and the fix direction, never the fix.
-   - **RECUT**: the step is too big or wrongly scoped: an `OVERLOADED:`, a step that needs paths it does not own, a worker that stopped with work left. `NOTE` is the reason for the divvyer.
+   - **RECUT**: the step is too big or wrongly scoped: an `OVERLOADED:` or a step that needs paths it does not own. `NOTE` is the reason for the divvyer.
    - **BASELINE**: the failing tests and the code they reach fail the same way at the base, untouched by the section. `NOTE` names the tests; the section stops.
    - **ESCALATE**: a product choice the design leaves open. `NOTE` is the decision the owner must make. Except under step 6's retry cap, a technical question is never escalated: take the answer that fits the design best and put it in `NOTE`.
 5. On kind `findings`, sort the review first: a finding blocks when it is a real bug (wrong behaviour that would ship broken), a test that cannot fail or tests the wrong thing, or a mismatch with the spec, and its failure scenario holds in the worktree. Blocking findings make RETRY-WITH-NOTE; with none, the verdict is RETRY-WITH-NOTE and `NOTE` reads `no finding blocks`. Every other finding goes on `BACKLOG`.
