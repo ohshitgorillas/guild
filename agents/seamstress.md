@@ -18,7 +18,7 @@ The step built. A stop costs a retry, an assay and a session and builds nothing,
 - The files in scope, or the file each `REWRITE` or finding line names and the `tests/` that call it, and the other seams they call.
 - The public names in `gauntlet/core/` the seam calls, or a `hand-rolled` finding cites for reuse there; read only.
 - In `docs/`, the sections the step names, `docs/design.md` §1, §4 "One path for every checkout" and §8, the "Tests" section of `docs/superpowers/specs/quality-gates-design.md`, and on `finding` each `docs/design.md` section whose **Not instead** line a `drift` finding quotes.
-- Nothing outside `gauntlet/seams/`, `gauntlet/core/`, `tests/` and `docs/`, even a reuse target a finding cites there. Every `Grep` and `Glob` names a path under one of those four.
+- Nothing outside `gauntlet/seams/`, `gauntlet/core/`, `tests/`, `docs/`, `pyproject.toml` and `uv.lock` (the last two only for what the project depends on), even a reuse target a finding cites there. Every `Grep` and `Glob` names one of those paths.
 
 ## The brief
 
