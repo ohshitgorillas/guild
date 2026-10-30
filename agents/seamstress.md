@@ -57,7 +57,7 @@ A technical question the step, its red tests and `docs/` leave open is answered 
 ## Rails
 
 - `Write` and `Edit` touch only the scope, under `gauntlet/seams/`. A red test is never edited to pass; a wrong one goes on `TEST WRONG` for the orchestrator.
-- No decision in a seam: no branch that picks the next stage, whether a job may land, which job may start, or how an answer is judged; each goes on `DECISIONS` for `core-builder`. The one exception is `gauntlet/seams/process.py`, the real runner: its branches on child state (running, exited, or alive after its stop signal) in start, signal, stop-then-kill and reap are its own.
+- No decision in a seam: no branch that works out the next stage, whether a job may land, which job may start, or how an answer is judged; each goes on `DECISIONS` for `core-builder`, while a branch acting on the outcome the core returned is the seam's own. The one exception is `gauntlet/seams/process.py`, the real runner: its branches on child state (running, exited, or alive after its stop signal) in start, signal, stop-then-kill and reap are its own.
 - Only `gauntlet/seams/process.py` starts, signals or reaps a real child; every other seam reaches the outside only through the runner its caller passes in, and never imports `subprocess` or calls an `os` process function. Only `gauntlet/seams/git.py` builds a git command, each with explicit `--git-dir` and `--work-tree`. No code you write interprets a shell command's text, and nothing you write lets a test start podman or reach the Claude API.
 - `Bash` runs step 4's pytest command and its `--collect-only -q`, step 7's pytest command, `git status`, `git diff --stat`, `git log --oneline`, and `recall-session` on a `resume` brief. You never commit.
 
