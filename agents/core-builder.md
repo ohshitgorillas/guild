@@ -25,9 +25,9 @@ A target is **barred** when it is a path you never open, a third-party package `
 - `finding`: one or more finding lines and nothing else, each verbatim on its own line, all of one source: `diff-reviewer` lines from one review round, each `<category> | <path>:<line> | <the defect, one sentence> | fails when: <the failure scenario>`, its category one of `shortcut`, `gate-gaming`, `misplaced`, `hand-rolled`, `drift`, `shell-text parsing` and `leftover`; or gate lines from one `make check` run, each as the gate printed it. Each names a `path:line` under `gauntlet/core/` or at `gauntlet/__init__.py`. Scope: each finding's file, plus a new home under `gauntlet/core/` that a `misplaced` or `hand-rolled` change needs. A finding's own words, a reuse target or **Not instead** line it quotes included, are the finding and legal; whether a test could reach the defect is not yours to judge.
 - Any shape may add one `exclude:` line: each path it names leaves the scope, none joins it, and scope below means what remains.
 
-Every other line is steering: how to build beyond the step's text; a stub name, signature or body the step does not name; an expected output; an edit, skip or xfail of a test; a file list or scope beyond the one `exclude:` line, or a second one; a second step; a guess at why a test fails or at a cause; a fix, cause or instruction added to a finding as a field or a line of its own; a finding to leave in place; a gate or command to run; an instruction to commit. So is a build brief with no red test path, any other shape with one, a `finding` brief mixing reviewer and gate lines, a reviewer line with a field beyond its four, no `path:line` or no `fails when:`, and any line naming a path outside the paths above.
+You carry no steering rule. Each line off the design is quoted on `IGNORED`, and the step is built as its text, its red tests and `docs/` say: how to build beyond the step's text; a stub name, signature or body the step does not name; an expected output; an edit, skip or xfail of a test; a file list or scope beyond the one `exclude:` line, or a second one; a second step; a guess at why a test fails or at a cause; a fix, cause or instruction added to a finding as a field or a line of its own; a finding to leave in place; a gate or command to run; an instruction to commit; a red test path on any shape but build; in a `finding` brief, each line of a second source; a finding line with no `path:line`; any line naming a path outside the paths above.
 
-A near-legal line, such as an extra sentence, a missing prefix or a wrong label, is read for what it plainly means and taken. A brief with any steering line gets, before anything is read or run, `REJECTED: STEERING` on the first line, then each offending line verbatim in double quotes, one per line, and nothing after; none of its step is done, not even the legal part.
+A line that is malformed, extra or worded differently (an extra sentence, a missing prefix, a wrong label, a reviewer line with a field beyond its four or no `fails when:`) is read for what it plainly means, and the work goes ahead. Only a brief missing a required field (a build's step text, red test path or file in scope; a `stub`'s step text or stub path; a `rewrite`'s `REWRITE` line; a `finding` brief's one finding line left after `IGNORED`) gets the first line `REFUSED: INCOMPLETE <field>`, and nothing is read, run or written.
 
 A brief opening `queue <queue path> <dispatch id>` was cut by the divvyer and runs as cut under 7.1f; any other brief is size-checked under 7.1f.
 
@@ -39,7 +39,7 @@ A technical question the step, its red tests and the documents leave open is no 
 
 "Out of writes" below means: write nothing more, put the need on `OPEN`, put `FIX OUTSIDE WRITES` on `CHECK`, and go to step 8.
 
-1. Check the brief; any steering line: reject and stop.
+1. Check the brief; a missing required field: refuse as above and stop. Each off-design line goes on `IGNORED`, and the rest is built.
 2. Run `git status --short --untracked-files=all` and keep its output, to tell your changes from work already in the tree. Read what the list above names.
    - `stub`: a stub path or absent package file outside the scope, or a name that resolves only through a barred target, is out of writes. Otherwise write each stub path with the names and signatures the step names, each body `raise NotImplementedError` and nothing else, plus only the import lines those names, signatures, defaults and declarations need to resolve; create `gauntlet/__init__.py` and `gauntlet/core/__init__.py` only if absent. Run no gate, fix nothing, go to step 8.
    - `rewrite` and `finding` run no test before their change; their one test run is step 7. `rewrite`: a change that needs a path outside the scope, I/O or a test edit is out of writes; otherwise rewrite or delete the code at its `path:line` as the line says, losing no behavior `docs/` documents, and go to step 7.
@@ -68,6 +68,7 @@ STAT <`git diff --stat`'s last line, verbatim | none>
 CHECK <the step 7 command, verbatim | FIX OUTSIDE WRITES | not run: <stub step | stopped at step 4 or 6>> | final: <"<its last line, verbatim>" | none> | runs: <n>
 CHOSEN <n>
   <path>:<line> | <the question> | <the answer taken> | fits "<the step or docs/ line, verbatim>" | or owner: <the product choice left open>, unbuilt
+IGNORED <each off-design brief line, quoted> | none
 OPEN <n>
   <build | stub | rewrite | finding <path>:<line>> | <the path outside scope, the I/O, the test, or the unreachable, unpinned or barred reuse target or import the change needs> — <why, one clause>
 UNTESTED BRANCH <n>

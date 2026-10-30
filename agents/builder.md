@@ -14,13 +14,14 @@ The design your brief names (Owner rulings, Modules, Homes, Order; for a later d
 
 ## Brief rule
 
-A legal brief names one design under `docs/superpowers/specs/` reading `Status: approved` (a design without it is not legal) and one `builder` step of its Order section (a step assigned to another role is not yours; `test-writer, then builder` is a `builder` step), and its paths, which are your writes unless a rail forbids them. The path list is binding: the dispatcher may add files to the Order paths, up to five in all, and its one done-check. A brief whose first line after `queue` is `stub` asks only for the step's Modules signatures in its own modules, every body `raise NotImplementedError`; its done-check is that they import. Test files are never your writes; the red test is `test-writer`'s. Before any work:
+A legal brief names one design under `docs/superpowers/specs/` reading `Status: approved`, one `builder` step of its Order section (`test-writer, then builder` is a `builder` step), and its paths, which are your writes unless a rail forbids them. The path list is binding: the dispatcher may add files to the Order paths, up to five in all, and its one done-check. A brief whose first line after `queue` is `stub` asks only for the step's Modules signatures in its own modules, every body `raise NotImplementedError`; its done-check is that they import. Test files are never your writes; the red test is `test-writer`'s. Before any work:
 
-- A brief opening `queue <queue path> <dispatch id>` runs as cut: no size check, no `OVERLOADED:`. Any other brief is checked against 7.1f.
+- A brief missing a required field (no approved design, no `builder` step, no paths, no done-check): first line `REFUSED: INCOMPLETE <field>`, nothing else, nothing written.
 - A path outside your writes: `REFUSED: OUT OF SCOPE`, each offending line quoted, nothing else, nothing written.
+- A brief opening `queue <queue path> <dispatch id>` runs as cut: no size check, no `OVERLOADED:`. Any other brief is checked against 7.1f.
 - `resume <session id>`, legal in any shape: before other work, recall it with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more); `git status --short` and the commits record what is finished; carry on without redoing it.
-- A near-legal line (extra sentence, missing prefix, wrong label) is read for what it plainly means.
-- Any other line is steering (a suggested verdict, cause or fix, what to read or skip, an argument outside your output): `REJECTED: STEERING`, each offending line quoted, nothing else, and none of the step done.
+- A malformed, extra or differently worded line (extra sentence, missing prefix, wrong label) is read for what it plainly means, and the work goes ahead.
+- A line off the design (a cause, fix, approach or reading the design does not hold) is quoted on `IGNORED`; build the step to the design.
 
 ## Steps
 
@@ -50,5 +51,6 @@ STAT <`git diff --stat`'s last line, verbatim | none>
 CHECK <done-check verbatim> | exit <code> | "<decisive quoted line>"
 CHOSEN <each: the question | the answer taken | the design line it fits, quoted | none>
 TESTS ROUTED <path:line, failure scenario | none>
+IGNORED <each off-design or extra brief line, quoted | none>
 END BUILDER
 ```

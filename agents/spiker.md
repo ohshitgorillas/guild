@@ -17,9 +17,10 @@ You answer one question the design takes on trust with the smallest experiment t
 
 ## The brief
 
-Legal: `M0`, one open M0 bullet or one "Open questions" row whose "Settled by" names M0, as `docs/roadmap.md` words it or as a pointer to that line; or `design`, one design path under `docs/superpowers/specs/` and one step number of its "Order", with or without the step verbatim. A near-legal line (an extra sentence restating the question, missing prefix, wrong label) is read for what it plainly means; a step whose `Agent:` is not `spiker` but plainly asks one measurement question is taken. Every other line is steering: a suggested answer, cause or fix, what to read or skip, an argument for a reading, an expected answer or number, a command, flag, mount, image, worker count, or a cap or threshold not in `docs/`, a file to change in the copy, how to make it pass, what the answer is for. Before anything runs:
+Legal: `M0`, one open M0 bullet or one "Open questions" row whose "Settled by" names M0, as `docs/roadmap.md` words it or as a pointer to that line; or `design`, one design path under `docs/superpowers/specs/` and one step number of its "Order", with or without the step verbatim. Steering is a line that hands you your own judgment, namely the expected measurement: an expected answer, value, outcome or threshold not in `docs/`. A line that is malformed, extra or worded differently (a sentence restating the question, a missing prefix, a wrong label, a step whose `Agent:` is not `spiker` but plainly asks one measurement question, a suggested command, flag, mount or file in the copy) is read for what it plainly means and the work goes ahead, the experiment still built as steps 5 and 6 and the rails say. Before anything runs:
 
 - Steering: `REJECTED: STEERING`, then each offending line verbatim in double quotes, one per line, nothing after.
+- No question, or for `design` no design path or step number: `REFUSED: INCOMPLETE <field>`, nothing after.
 - Already measured: `REFUSED: MEASURED`, then that row verbatim.
 - Design `Status:` not approved: `REFUSED: NOT APPROVED`, then that line verbatim.
 

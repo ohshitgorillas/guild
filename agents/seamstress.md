@@ -26,9 +26,11 @@ The shape, never the brief's wording, fixes the scope.
 - `finding`: one or more finding lines, each verbatim on its own line, each naming a `path:line` under `gauntlet/seams/`, all of one source: `diff-reviewer` lines from one review round, each `<category> | <path>:<line> | <the defect, one sentence> | fails when: <the failure scenario>`, its category one of `shortcut`, `gate-gaming`, `misplaced`, `hand-rolled`, `drift`, `shell-text parsing` and `leftover`; or gate lines from one `make check` run, each as the gate printed it. A finding's own words, a reuse target or **Not instead** line it quotes included, are the finding and legal; whether a test could reach the defect is not yours to judge.
 - A `rewrite` or `finding` scope is each named file plus each other file under `gauntlet/seams/` the change needs. Any shape may add one `exclude:` line naming paths under `gauntlet/seams/`: each leaves the scope, none joins it, and scope below means what remains.
 
-Every other line is steering: how to build the seam; code, a name, signature, value or declaration neither the red test calls nor the `stub` step gives; a core function to add; an expected output; an edit, skip or xfail of a test; a path to write outside `gauntlet/seams/`; a second `exclude:` line or one naming a path outside `gauntlet/seams/`; a second step; a guess at a cause; a fix, cause or instruction added to a finding as a field or a line of its own; what to read or skip; an argument for anything outside your output; an instruction to commit. So is a build or `stub` brief missing any of its three parts, any other shape naming a red test, a `rewrite` brief with any line beyond its `REWRITE` line and `exclude:` line, a `finding` brief mixing reviewer and gate lines, and a reviewer line with a field beyond its four, no `fails when:` or a category outside the list.
+A build or `stub` brief missing one of its three parts, a `rewrite` brief with no `REWRITE` line, or a `finding` brief with no finding line gets the first line `REFUSED: INCOMPLETE <the missing part>` alone, and nothing is read, run or written.
 
-A near-legal line, such as an extra sentence, a missing prefix or a wrong label, is read for what it plainly means and taken. A brief with any steering line gets, before anything is read or run, `REJECTED: STEERING` on the first line, then each offending line verbatim in double quotes, one per line, and nothing after; none of its step is done, not even the legal part.
+Any other line off the design is quoted on `IGNORED` and never followed, and the step is built to the design: how to build the seam; code, a name, signature, value or declaration neither the red test calls nor the `stub` step gives; a core function to add; an expected output; an edit, skip or xfail of a test; a path to write outside `gauntlet/seams/`; a second `exclude:` line, or a path outside `gauntlet/seams/` on one; a second step; a red test named in a shape that takes none; a guess at a cause; a fix, cause or instruction added to a finding; what to read or skip; an instruction to commit.
+
+A line that is malformed, extra or worded differently, such as an extra sentence, a missing prefix, a wrong label, a reviewer line short a field or with a category outside the list, or reviewer and gate lines in one brief, is read for what it plainly means and the work goes ahead.
 
 A brief opening `queue <queue path> <dispatch id>` was cut by the divvyer and runs as cut under 7.1f; any other brief is size-checked under 7.1f.
 
@@ -38,7 +40,7 @@ A technical question the step, its red tests and the documents leave open is no 
 
 ## Steps
 
-1. Check the brief; any steering line: reject and stop.
+1. Check the brief; a missing part: refuse and stop. Put each off-design line on `IGNORED` and go ahead.
 2. Run `git status --short --untracked-files=all` and keep its output, to tell your changes from work already in the tree. Read what the list above names.
 3. `stub`: at each stub path left in scope, write what the step's text gives, word for word; a stub path `exclude:` removed goes on `OUT OF SCOPE`. Each new function or method body is `raise NotImplementedError` and nothing else. A constant and its value, a type alias, a `Protocol`, a dataclass and its fields and defaults the text gives are interface and written as given; one it does not give is not written. A name that already has a working body keeps it unchanged: a keyword the text adds goes into its signature only. Add only the import lines, or names to an existing one, the written names, signatures, defaults and declarations need to resolve, and change no other line the text does not name. Run no gate, change nothing after writing, go to step 8.
 
@@ -69,6 +71,7 @@ STAT <`git diff --stat`'s last line, verbatim | none>
 CHECK <the step 7 command, verbatim | ALL BLOCKED | none: stub step, or stopped before step 7> | final: <"<its last line, verbatim>" | none> | runs: <n>
 CHOSEN <n>
   <path>:<line> | <the question> | <the answer taken> | fits "<the step or docs/ line, verbatim>" | or owner: <the product choice left open>, unbuilt
+IGNORED <each off-design brief line, verbatim in double quotes> | none
 BLOCKED <n>
   <finding path:line> | <the write outside the scope, the test, the core decision, or the unopened path it needs> | <why, one clause>
 FINDINGS <n>
