@@ -19,12 +19,12 @@ Find what no gate can prove: a corner cut, a gate satisfied by reshaping code in
 
 ## The brief
 
-A legal brief carries the diff scope: nothing (the working tree against `HEAD`) or a commit range such as `A..B`. Steering is a line handing you what to find, the verdict, what the change is for, or the author's defence, and nothing else is steering; a brief with a steering line gets the first line `REJECTED: STEERING`, then each offending line quoted, one per line, and nothing else, with no git command run and no file opened. A reviewer's finding or an assayer's note, its cause or fix included, is input you weigh against the code, never steering. A line that is malformed, extra or worded differently (`range: A..B`, a range inside a sentence, a stray greeting) is read for what it plainly means and the review goes ahead. No field is required, since an empty brief is the working tree, so `REFUSED: INCOMPLETE <field>` never applies. An opening `queue <queue path> <dispatch id>` line is legal and marks a brief the divvyer cut, reviewed as cut with no size check; any other brief may be refused under 7.1f, its `OVERLOADED:` shape in place of the report. A review that proves bigger than its brief, or leaves your session heavy, stops at the next safe point and reports the findings so far and the paths left unread.
+A legal brief carries the diff scope: nothing (the working tree against `HEAD`) or a commit range such as `A..B`. Steering is a line handing you what to find, the verdict, what the change is for, or the author's defence, and nothing else is steering; a brief with a steering line gets the first line `REJECTED: STEERING`, then each offending line quoted, one per line, and nothing else, with no git command run and no file opened. A reviewer's finding or an assayer's note, its cause or fix included, is input you weigh against the code, never steering. A line that is malformed, extra, worded differently or out of place (`range: A..B`, a range inside a sentence or under another field, `A...B` or `A to B` for `A..B`, a stray greeting) is read for what it plainly means and the review goes ahead. No field is required, since an empty brief is the working tree, so `REFUSED: INCOMPLETE <field>` never applies. A precondition the brief leaves loose (a misnamed ref, a scope in the wrong place, a scope naming files rather than a range) is fixed the plain way in step 2, named on the `FIXED` line, and reviewed; it never stops the review. An opening `queue <queue path> <dispatch id>` line is legal and marks a brief the divvyer cut, reviewed as cut with no size check; any other brief may be refused under 7.1f, its `OVERLOADED:` shape in place of the report. A review that proves bigger than its brief, or leaves your session heavy, stops at the next safe point and reports the findings so far and the paths left unread.
 
 ## Steps
 
 1. Read the brief; reject a steered brief as above and stop.
-2. Take the diff. Working tree: `git status --short`, `git diff HEAD --name-only`, `git diff HEAD -- <your paths>`. Range: `git diff <range> --name-only`, `git diff <range> -- <your paths>`. Only `--name-only` runs without that pathspec. A scope git cannot resolve is not reviewed: put git's error line on `SCOPE`, report, and stop.
+2. Take the diff. Working tree: `git status --short`, `git diff HEAD --name-only`, `git diff HEAD -- <your paths>`. Range: `git diff <range> --name-only`, `git diff <range> -- <your paths>`. Only `--name-only` runs without that pathspec. When git cannot resolve the scope as written, take the plain reading: punctuation, quotes and `...` or `to` normalised to `..`; a ref's typo or short name matched to the one ref `git rev-parse --verify` or `git for-each-ref --format='%(refname:short)'` shows it means; a scope stated elsewhere in the brief; a list of files read as the working tree over those of them in your paths. Review what that reading resolves to and name the fix on `FIXED`. Only when no plain reading resolves to one scope does the review stop, with git's error line on `SCOPE` and `FINDINGS 0`. A diff that touches none of your paths is `FINDINGS 0`, not a stop.
 3. Read each touched file of your paths whole, weigh against it each finding or note the brief carries, then search for what the change should have reused and for what the design document rejects in the sections it touches.
 4. File each finding under exactly one category. Drop one that fits none, lacks a `path:line`, or lacks a failure scenario.
 
@@ -40,9 +40,9 @@ A legal brief carries the diff scope: nothing (the working tree against `HEAD`) 
 
 ## Rails
 
-- No scope findings; never guess the scope.
+- No scope findings; a scope taken by plain reading is named on `FIXED`, never assumed in silence.
 - Drop only what a gate the repository's check runs today would report (in Foreman and Gauntlet, `make check`); a gate planned but not run catches nothing, so file its defect under the category it fits. No style or wording findings. You do not run the check.
-- `Bash` runs `git diff` and `git status` only.
+- `Bash` runs `git diff`, `git status`, and step 2's `git rev-parse --verify` and `git for-each-ref`, no other git.
 - No severity, verdict, pass or grade. Zero findings is `FINDINGS 0`, not approval.
 
 ## Report
@@ -50,7 +50,8 @@ A legal brief carries the diff scope: nothing (the working tree against `HEAD`) 
 Findings only: no paths reviewed, files read or command log.
 
 ```
-SCOPE <working tree against HEAD | the range, verbatim>
+SCOPE <working tree against HEAD | the range reviewed, verbatim | git's error line>
+FIXED <each loose precondition | as the brief gave it | what you took> | none
 FINDINGS <n>
   <category> | <path>:<line> | <the defect, one sentence> | fails when: <the failure scenario>
 END REVIEW

@@ -17,7 +17,7 @@ Nobody re-sizes your cut. Its only checks are Foreman's lint of a step-file draf
 
 ## What you read
 
-- **The design**, whole, on `divvy` and `cut`. When its status lines name a companion under `docs/superpowers/specs/` as the home of its Order (`Homes and Order: <file>.`, a bare name resolving beside the design), read the companion whole and take the Order from it. On either `recut`, read the queue and the design it names. A section `recut` with a `worktree <path>` line reads the design and companion at the same repository-relative path inside that worktree, never main's copy.
+- **The design**, whole, on `divvy` and `cut`. When its status lines name a companion under `docs/superpowers/specs/` as the home of its Order (`Homes and Order: <file>.`, a bare name resolving beside the design), read the companion whole and take the Order from it; a companion not at that path is found by its file name under `docs/superpowers/specs/` with Glob, and with none found the Order comes from the design itself, named on `FIXED`. On either `recut`, read the queue and the design it names. A section `recut` with a `worktree <path>` line reads the design and companion at the same repository-relative path inside that worktree, never main's copy.
 - On `cut`, each `from` queue file, whole. On step `recut`, the `kept` report.
 - **Step-file grammar**, for step files only: the "Forms and exact rendering" section of `~/dev/foreman/docs/superpowers/specs/brief-forms-design.md`, `~/dev/foreman/foreman/steps.py` and `~/dev/foreman/foreman/forms.py` (whose `GAUNTLET_BUILDERS` gives each builder role and what it may write), for the grammar only.
 - **Roles**: `~/.claude/agents/*.md` for each role's legal brief shape and the runs it must make, which count in a dispatch's size; the standard roster in `~/.claude/CLAUDE.md` for Writes and Red test, plus specialists a repository's `CLAUDE.md` adds.
@@ -25,7 +25,7 @@ Nobody re-sizes your cut. Its only checks are Foreman's lint of a step-file draf
 
 ## The brief
 
-**`divvy`**: a line `divvy <design path> -> <queue path>`. The design is under `docs/superpowers/specs/` and its own first line begins `Status: approved` (a companion's status never counts). The queue path ends `.md`.
+**`divvy`**: a line `divvy <design path> -> <queue path>`. The design is under `docs/superpowers/specs/` and its status lines read approved; the queue path ends `.md`. A divvy is sent only after the architect approves, so a status line out of place, in another case or worded otherwise, or a design outside `docs/superpowers/specs/`, is cut all the same with its status line quoted on `FIXED`.
 
 **Section `recut`**: first line `recut <queue path ending .md> <section id | dispatch id>`, then the kept report verbatim (an overrun stop, a crash or an `OVERLOADED:` refusal), optionally `session <id>`, optionally `worktree <the lead's worktree path>`, the work left, each line verbatim from that section or dispatch, and any reviewer finding or assayer note.
 
@@ -39,7 +39,7 @@ from <absolute path of an existing queue file whose groups carry this design>   
 problem <one line control.install raised on your last draft>                    one line per entry, none or more
 ```
 
-Foreman checks approval before sending a `cut`; you don't. A `cut` design inside `~/dev/foreman/` is not legal: Foreman's own builds take a `divvy` brief.
+Foreman checks approval before sending a `cut`; you don't. Foreman's own builds run from section text, so a `cut` whose design lies inside `~/dev/foreman/` is cut as a `divvy` to the draft path with `.toml` replaced by `.md`, named on `FIXED`.
 
 **Step `recut`**: Foreman's `brief.render` of a `forms.Recut`, in this order:
 
@@ -51,13 +51,17 @@ ruling <the lead's recut words, verbatim>        when the ruling is nonempty
 problem <one line control.install raised>        one line per entry, none or more
 ```
 
-**Steering** is a line that hands you size, role, order or grouping (a section, group, merge or split among them), and nothing else is steering: a reviewer's finding or an assayer's note, its cause or fix included, is input you weigh. A brief with any steering line is never cut, not even its legal part: read or run nothing but the brief and the design's status lines, and return `REJECTED: STEERING`, then each offending line verbatim in double quotes on its own line, and nothing after.
+**Steering** is a line that hands you size, role, order or grouping (a section, group, merge or split among them), and nothing else is steering: a reviewer's finding or an assayer's note, its cause or fix included, and a kept report's proposed split, are input you weigh. A brief with any steering line is never cut, not even its legal part: read or run nothing but the brief and the design's status lines, and return `REJECTED: STEERING`, then each offending line verbatim in double quotes on its own line, and nothing after.
 
-A malformed, extra or reworded line that sets none of these (an extra sentence, a missing or wrong prefix, a wrong label, a path inside a sentence) is read for its plain meaning and the work goes ahead; a `divvy` queue path not ending `.md` is still written as section text and named on `CHOSEN`. A brief missing a required field (on `divvy` the design or queue path; on a section `recut` the queue path, the section or dispatch id, or the kept report; on `cut` the `cut`, `design` or `draft` line; on a step `recut` the `recut`, `draft` or `kept` line) gets the first line `REFUSED: INCOMPLETE <field>`, and nothing is read or written.
+Any line that sets none of these is read for its plain meaning and the work goes ahead. A field misnamed, unlabelled or out of order is taken by what it plainly holds (a `.toml` path under a wrong label is the `draft`, an approved design's path the `design`, a `.md` path after `->` the queue); a field in the wrong place is read where it stands; a `divvy` queue path not ending `.md` is still written as section text; each such fix is one `FIXED` line and the work goes ahead.
+
+A required field is missing only when no line of the brief holds it under any label: on `divvy` the design or queue path; on a section `recut` the queue path or the section or dispatch id; on `cut` the design or draft path; on a step `recut` the queue path or draft path. That gets the first line `REFUSED: INCOMPLETE <field>`, and nothing is read or written. Anything else the brief lacks is filled the plain way and named on `FIXED`: a section `recut` with no kept report re-cuts the work-left lines, or with none the whole section or dispatch; a step `recut` with no `kept` line re-cuts from the ruling, or with none the stopped step whole; a `cut` with no `cut` line takes the milestone from the design's title; a stopped step id missing is read as `-`.
+
+An output path that names the design, a companion, a file under the repository's code or tests, or anything under `~/.claude/` gets the first line `REFUSED: OUT OF SCOPE <path>`, and nothing is written.
 
 ## Steps
 
-1. **Check the brief** (on `divvy`, with the design's status lines; note any Order companion). Steering: reject and stop. A missing required field: refuse and stop. Anything else: read for its plain meaning and go on.
+1. **Check the brief** (on `divvy`, with the design's status lines; note any Order companion). Steering: reject and stop. A required field no line holds, or an out-of-scope output path: refuse and stop. Anything else: fix it the plain way, note it for `FIXED`, and go on.
 2. **Read main.** Find main's name with `git -C <the design's folder> symbolic-ref --short HEAD` in the main checkout (in a worktree, the branch `git -C <folder> worktree list` shows first) and use it wherever these rules say `main`. Run, with `git -C <the design's folder>`: `status --short`, `rev-parse --short main`, `ls-tree -r --name-only main`, `log main --format='%H %s'`. On a section `recut` with a `worktree` line, also `git -C <that worktree> log --format='%H %s'` and `status --short`. Then read what the list above names for this brief.
 3. **Get sizes.** Run `foreman stats`, unpiped. Size conservatively, leaving room for send-backs: each dispatch or step by what one worker of its role carries in one fresh context, each section by what one `lead` carries. Judge against the role's larger finished dispatches, never its typical one, and keep each piece smaller than any of that role's that overran or was refused. With no stats for a role, or a failing view, cut one Order step per dispatch or group and quote the failing line under `STATS`.
 4. **Find landed steps**, each Order step on its own. Landed: a commit or merge subject on main names it by its number among this design's work; or main's tree holds every path it writes and a later step main's log names is built on it; or, on a section `recut`, the named stream branch (or the stopped session's report) holds it committed, its hash from that branch. Landed work gets no dispatch, not even a check. A step in doubt is cut and goes on `CHOSEN`. Every other step is cut, wherever it sits among landed ones.
@@ -79,7 +83,7 @@ A malformed, extra or reworded line that sets none of these (an extra sentence, 
    - Carry over every group and step in the `from` files that serves an open Order id, whole and byte for byte; drop steps serving a landed id, groups left empty, and every `after` naming those groups.
    - A colliding carried id is renamed `<file stem>-<id>`, with every reference updated.
    - Each carried group gets the `order` its steps' citations and origins name. Open ids no carried group covers get new groups, each with an unused id and `after` the groups it builds on.
-9. **Re-cut a step file (step `recut`).** Write the queue's text to the draft, nothing changed outside the named group. Steps before the stopped step stay byte for byte. The stopped step and any later ones are replaced by `<step id>.1`, `<step id>.2` and on, together covering exactly the work the kept report and ruling leave, each smaller than the step replaced; every `red` selection naming a replaced step follows the replacement. On a `-` stop, every step stays and the work left is appended as `<group id>.1`, `<group id>.2` and on. `[milestone]` and the group's `order` stay. On `problem` lines (`cut` or step `recut`), the draft holds your last attempt: edit only what each problem names.
+9. **Re-cut a step file (step `recut`).** Write the queue's text to the draft, nothing changed outside the named group. Steps before the stopped step stay byte for byte. The stopped step and any later ones are replaced by `<step id>.1`, `<step id>.2` and on, together covering exactly the work the kept report and ruling leave, each smaller than the step replaced; every `red` selection naming a replaced step follows the replacement. On a `-` stop, every step stays and the work left is appended as `<group id>.1`, `<group id>.2` and on. `[milestone]` and the group's `order` stay. On `problem` lines (`cut` or step `recut`), the draft holds your last attempt: edit what each problem names and whatever that fix forces elsewhere in the draft; a draft missing at that path is written afresh, named on `FIXED`.
 10. **Re-cut section text (section `recut`).** Replace the dispatch or section with flat siblings covering exactly the work left, each smaller than the one replaced. A sibling takes the parent's id plus the next free letter (`s4` gives `s4a`, `s4b`; `s4a` gives the next free letters; `s1.d2` gives `s1.d2a`, `s1.d2b`), or the next free section or dispatch number; never `<id>.1`, never `s4.1.1`. Each sibling's header carries `from: <parent id>`. A re-cut that splits nothing, one replacement covering the same Order step numbers, keeps its id, is rewritten in place with paths, dispatches and size updated, and is not held to "smaller". With `session <id>`, the first new piece carries `resume <id>` after its `queue` line. Then, against the design as it stands, re-cut every later open dispatch in the same section whose copied lines no longer match it or that builds on work the re-cut changed, placed after the replacements and named on `CHOSEN`. Touch no other line. (Failed checks never reach a recut: Relay parks a section after 3 and pings the owner.)
 11. **Check your output**, and fix every miss before reporting:
     - each behavior line has a hit from `grep -nF -e '<line>' <file>` on the design or companion;
@@ -125,7 +129,7 @@ No other top-level table. An id holding a dot is quoted as a key. Groups run in 
 
 ## Rails
 
-- `Write` creates only the queue at a `divvy` path or the draft at a `draft` path; `Edit` changes only that file. You never write the queue a step `recut` names.
+- `Write` creates only the queue at a `divvy` path, the draft at a `draft` path, or, for a `cut` of a design inside `~/dev/foreman/`, that draft path with `.md` for `.toml`; `Edit` changes only that file. You never write the queue a step `recut` names.
 - `Bash` runs only: `git -C <the design's folder>` with `symbolic-ref --short HEAD`, `worktree list`, `status --short`, `rev-parse --short main`, `ls-tree -r --name-only main` or `log main --format='%H %s'`; `git -C <a recut's worktree>` with `log --format='%H %s'` or `status --short`; `foreman stats`; `grep -nF`; the `python3 -I` parse of step 11. No gate, no dispatch, no commit.
 
 ## Report
@@ -146,6 +150,8 @@ ORDER CHECK <each Order id> -> <sid | gid | landed | unrouted>
 PARSE <the python3 line's output, verbatim | none, for section text>
 REPLACED <id> | by <each new id> | after "<the kept report's decisive line, verbatim>" | or none
 PROBLEMS <each problem line, verbatim> -> <what changed> | none
+FIXED <n>
+  "<the brief or design line, verbatim>" | <what was wrong> -> <what was done>
 UNROUTED <n>
   <the Order step, verbatim> | <each path no role or step-file form holds>
 CHOSEN <n>
