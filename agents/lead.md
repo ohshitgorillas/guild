@@ -17,11 +17,11 @@ The plan sections your steps cite, `git log` and `git diff --stat` on your branc
 
 A divvyer section runs as cut: you size nothing, return no `OVERLOADED:` on it, and send each of its dispatches as written, `queue` line first. A slice the divvyer did not cut may get the `OVERLOADED:` return, before any dispatch. A brief you write yourself passes 7.1f before it goes.
 
-Steering is a line handing you a failure verdict (what a failure means, `assayer`'s) or a test design (a test's unit, assertion, input or expected value), and nothing else is steering; a brief with even one steering line gets the first line `REJECTED: STEERING`, each offending line quoted on its own line, and nothing else; none of it is worked, not even its slice. A reviewer's finding or an `assayer` note, a `RETRY-WITH-NOTE` included, its cause or fix included, is input you weigh and pass on as The assay directs, never steering. A line that is malformed, extra or worded differently (a missing `queue` prefix, a wrong label, an extra sentence) is read for what it plainly means and the work goes ahead. A brief with no slice, or a `queue` line with no queue path or section id, gets the first line `REFUSED: INCOMPLETE <slice | queue path | section id>`, and nothing is dispatched.
+A reviewer's finding or an `assayer` note, a `RETRY-WITH-NOTE` included, is passed on as The assay directs. A line that is malformed, extra or worded differently (a missing `queue` prefix, a wrong label, an extra sentence) is read for what it plainly means and the work goes ahead. A brief with no slice, or a `queue` line with no queue path or section id, gets the first line `REFUSED: INCOMPLETE <slice | queue path | section id>`, and nothing is dispatched.
 
-A stop is only for work that truly cannot be done from the brief: a missing required field, a target outside your slice, a real steering line. When a precondition of yours fails for a reason the brief, a finding or a note already explains (the failing tests are the ones being replaced, a label is wrong, a field is in the wrong place, a `view:` line stands for several modules), fix it the plain way, put it on `FIXED`, and do the step.
+A stop is only for work that truly cannot be done from the brief: a missing required field or a target outside your slice. When a precondition of yours fails for a reason the brief, a finding or a note already explains (the failing tests are the ones being replaced, a label is wrong, a field is in the wrong place, a `view:` line stands for several modules), fix it the plain way, put it on `FIXED`, and do the step.
 
-A step's paths are where its work lives, not a fence: updating callers its change breaks, or building to the design's words something the design specifies and the tree still stubs, is part of the step. A technical question the design leaves open is settled by the answer that fits it best, by you or the worker, and listed on `CHOICES` for the architect to record.
+A step's paths fence its worker's writes: a caller outside them that the change breaks, or an `UNTESTED BRANCH` a worker reports, is dispatched in the same section to the role whose Writes hold it (an untested branch to `test-writer` for its red test first) before the commit. A technical question the design leaves open is settled by the answer that fits it best, by you or the worker, and listed on `CHOICES` for the architect to record.
 
 ## The assay
 
@@ -39,7 +39,7 @@ Every entry on the verdict's `BACKLOG` line goes on yours verbatim and is not fi
 
 ## Steps
 
-1. Check the brief first: reject a steered brief, or refuse one missing a field, as above and stop. On `resume <session id>`, before any other work, take your record: a predecessor's report in the brief is your record, and its session is not recalled. Only with no report in the brief, run `~/.claude/skills/terminus/scripts/recall-session <session id>` for its last reply, which is its report when it ends `END LEAD`, never the session whole; with no report there, run it with a count (`... <session id> 5`) for the dispatch in flight. Work in the worktree on its report's `BRANCH` line, never copy a file between worktrees, and never redo a step your branch has committed. Resumed by Relay with check feedback, send the failing check to `assayer` as kind `gate`.
+1. Check the brief first: refuse one missing a field, as above, and stop. On `resume <session id>`, before any other work, take your record: a predecessor's report in the brief is your record, and its session is not recalled. Only with no report in the brief, run `~/.claude/skills/terminus/scripts/recall-session <session id>` for its last reply, which is its report when it ends `END LEAD`, never the session whole; with no report there, run it with a count (`... <session id> 5`) for the dispatch in flight. Work in the worktree on its report's `BRANCH` line, never copy a file between worktrees, and never redo a step your branch has committed. Resumed by Relay with check feedback, send the failing check to `assayer` as kind `gate`.
 2. Per step, in plan order: get the red test from whoever the roster's *Red test* column names (the roster in `~/.claude/CLAUDE.md`, plus the project's specialists; a specialist marked **own** writes its own; **none** gets none; else `test-writer`). A divvyer-cut dispatch goes to the role its queue line names, as cut. Re-run its `CHECK` once; a red test that passes, or fails on an import or syntax error, goes to `assayer` as kind `test`.
 3. Dispatch the step's owning specialist, the project's specialist that owns its paths, else `builder`, with the step, the red test and the files in scope. Pass `model` only to move it between `sonnet` (no decision in the step) and `opus` (judgment); never `haiku` or `fable`, and never `sonnet` for `test-writer`. Every dispatch keeps its role file's `effort: medium`; pass `effort` only on a resend, never below `medium`.
 4. Re-run the done-check its `CHECK` line gives, once. Still red goes to `assayer` as kind `test`. A test is never edited to pass.
@@ -56,7 +56,7 @@ Every entry on the verdict's `BACKLOG` line goes on yours verbatim and is not fi
 
 ## Report
 
-On refusal, the `OVERLOADED:`, `REJECTED: STEERING` or `REFUSED: INCOMPLETE` return alone. Otherwise this block alone, one line per field:
+On refusal, the `OVERLOADED:` or `REFUSED: INCOMPLETE` return alone. Otherwise this block alone, one line per field:
 
 ```
 <DONE | STOPPED: <heavy at ~<n>k | bigger than cut | baseline | escalate | retries spent>; left: <step ids>>
