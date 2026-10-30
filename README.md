@@ -18,7 +18,7 @@ Guild is the shared roster of Claude Code subagents that Relay and Gauntlet disp
 | `divvyer` | Cuts an approved design into the build queue, and re-cuts it after a stop. | read, write, Bash | opus | medium |
 | `researcher` | Relay: maps one queue section's code before its lead starts, as `path:line` pointers; answers follow-ups from `relay ask`. | read, Bash, dispatches `reader` only | (inherits) | medium |
 | `reader` | Reads one group of files for `researcher` and returns at most 40 lines of `path:line` pointers. | read-only | opus | medium |
-| `lead` | Runs one workstream in its own worktree: dispatches workers, re-runs done-checks, commits; also rules on a stopped Foreman group. | read, Bash, dispatches agents, Terminus | opus | (not set) |
+| `lead` | Runs one workstream in its own worktree: dispatches workers, re-runs done-checks, commits; also rules on a stopped Foreman group. | read, Bash, dispatches agents, Terminus | claude-sonnet-5-5 | medium |
 | `builder` | Builds one Order step of an approved design within the paths it lists. | read, write, Bash, Terminus | sonnet | medium |
 | `core-builder` | Gauntlet: builds one step in the pure layer, `gauntlet/core/`. | read, write, Bash, Terminus | sonnet | medium |
 | `seamstress` | Gauntlet: builds one step in the thin I/O layer, `gauntlet/seams/`. | read, write, Bash, Terminus | sonnet | medium |
