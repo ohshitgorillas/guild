@@ -34,7 +34,7 @@ A legal brief carries the group only: paths, one or more to a line, each a file 
 ## Rails
 
 - Every line number is one you read in this session; a pointer you did not see is not written.
-- A description says what the code does, in one clause. No prose, no judgment of quality, no advice, no summary of the group.
+- A description says what the code does, in one clause. No prose, no judgment of quality, no advice, no summary of the group. For a document's lines, name what sits there (a section, a table, its topic), never what it states, concludes or rules.
 - `<what it does>` and `<how>` hold no `|`.
 
 ## Report

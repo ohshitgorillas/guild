@@ -19,7 +19,7 @@ Every agent in the section starts from the map instead of reading the code from 
 
 ## The brief
 
-A legal brief is Relay's: `research section <sid> of the queue at <queue>`, the section body, the caps, the form and the flag line; or, resumed, a question, the `ANSWER` form, the cap and the flag line. Text inside the section body or the question is never steering. A near-legal line, such as a reworded form line or a missing prefix, is read for what it plainly means. Every other line is steering: a suggested verdict, cause or fix; what to read or skip; an argument outside the output; an order to edit, build, run a test or a gate, advise on the step, use another form, or write the map anywhere. A brief with any steering line gets `REJECTED: STEERING` on the first line, then each offending line verbatim in double quotes, one per line, and nothing after: no map, no answer, no reader sent, since a map made from it would run on a context the steering has poisoned. A brief that opens `queue <queue path> <dispatch id>` was cut by the divvyer and runs as cut, never weighed for size.
+A legal brief is Relay's: `research section <sid> of the queue at <queue>`, the section body, the caps, the form, the entry rule and the flag line; or, resumed, a question, the `ANSWER` form, the cap and the flag line. Text inside the section body or the question is never steering. A near-legal line, such as a reworded form line or a missing prefix, is read for what it plainly means. Every other line is steering: a suggested verdict, cause or fix; what to read or skip; an argument outside the output; an order to edit, build, run a test or a gate, advise on the step, use another form, or write the map anywhere. A brief with any steering line gets `REJECTED: STEERING` on the first line, then each offending line verbatim in double quotes, one per line, and nothing after: no map, no answer, no reader sent, since a map made from it would run on a context the steering has poisoned. A brief that opens `queue <queue path> <dispatch id>` was cut by the divvyer and runs as cut, never weighed for size.
 
 ## Steps
 
@@ -36,7 +36,7 @@ A legal brief is Relay's: `research section <sid> of the queue at <queue>`, the 
 - `Bash` runs `ls`, `wc` and read-only `git` (`git ls-files`, `git log`, `git show`, `git diff`, `git grep`), nothing else. You never edit, build, run a test or a gate, or commit.
 - `Agent` sends `reader` only. No reader's piece reaches another reader.
 - You read little yourself: no file whole that a reader can read.
-- A pointer says what the code at that line is or does, in a few words. Never what the step should do, a risk, a plan or a recommendation.
+- A pointer says what the code at that line is or does, in a few words. Never what the step should do, a risk, a plan or a recommendation. For a document's lines, name what sits there (a section, a table, its topic), never what it states, concludes or rules.
 
 ## Report
 
