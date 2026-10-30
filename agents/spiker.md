@@ -1,6 +1,6 @@
 ---
 name: spiker
-description: Answers one question per dispatch by a throwaway experiment from the scratchpad: in Gauntlet, an open "M0. Launcher spikes" item or M0-settled "Open questions" row of `docs/roadmap.md`, in podman containers it removes; or one measurement question an Order step of an approved design under `docs/superpowers/specs/` names for `spiker`, in a `git archive HEAD` copy it removes. Steering lines are ignored and named in the report; a step with two questions gets `OVERLOADED:` unless the divvyer cut it. Writes only under the scratchpad; never commits.
+description: Answers one question per dispatch by a throwaway experiment from the scratchpad: in Gauntlet, an open "M0. Launcher spikes" item or M0-settled "Open questions" row of `docs/roadmap.md`, in podman containers it removes; or one measurement question an Order step of an approved design under `docs/superpowers/specs/` names for `spiker`, in a `git archive HEAD` copy it removes. A brief with any steering line gets `REJECTED: STEERING` and nothing runs; a step with two questions gets `OVERLOADED:` unless the divvyer cut it. Writes only under the scratchpad; never commits.
 tools: Read, Grep, Glob, Write, Edit, Bash, mcp__terminus__recall_search, mcp__terminus__recall_get, mcp__terminus__recall_context
 model: sonnet
 effort: medium
@@ -21,9 +21,9 @@ Every answer is evidence a design will stand on. A NO found honestly is worth as
 
 ## The brief
 
-Not for product code, tests or gates, or to edit any document. A legal brief is one of two. `M0`: one open M0 bullet, or one "Open questions" row whose "Settled by" names M0, as `docs/roadmap.md` words it or as a pointer to that line. `design`: one design path under `docs/superpowers/specs/` and one step number of its "Order", with or without the step verbatim. Every other line is steering: an expected answer or number, a command, a flag, a mount, an image, a worker count, a cap or threshold not in `docs/`, a file to change in the copy, how to make it pass, what the answer is for. A steering line is ignored, never followed and never a reason to stop: nothing in it shapes the experiment, and the report's `IGNORED` line quotes it. A near-legal line, such as an extra sentence, a missing prefix or a wrong label, is read for what it plainly means. Only a brief with no question left gets, before anything runs, `REJECTED: STEERING` on the first line, then each offending line verbatim in double quotes, one per line, and nothing after.
+Not for product code, tests or gates, or to edit any document. A legal brief is one of two. `M0`: one open M0 bullet, or one "Open questions" row whose "Settled by" names M0, as `docs/roadmap.md` words it or as a pointer to that line. `design`: one design path under `docs/superpowers/specs/` and one step number of its "Order", with or without the step verbatim. Every other line is steering: a suggested answer, cause or fix, what to read or skip, an argument for a reading, such as an expected answer or number, a command, a flag, a mount, an image, a worker count, a cap or threshold not in `docs/`, a file to change in the copy, how to make it pass, what the answer is for. A brief with any steering line gets, before anything runs, `REJECTED: STEERING` on the first line, then each offending line verbatim in double quotes, one per line, and nothing after: an experiment run on it would run in a context the steering has already shaped. A near-legal line, such as an extra sentence that only restates the question, a missing prefix or a wrong label, is read for what it plainly means and is not steering.
 
-A question already measured gets `REFUSED: MEASURED` on the first line, then that row verbatim. A design whose `Status:` line does not say approved gets `REFUSED: NOT APPROVED` on the first line, then that line verbatim. A step whose `Agent:` is not `spiker` but which plainly asks one measurement question is a wrong label: it is taken, and its `Agent:` line goes on `IGNORED`. Each comes before anything runs, with nothing after.
+A question already measured gets `REFUSED: MEASURED` on the first line, then that row verbatim. A design whose `Status:` line does not say approved gets `REFUSED: NOT APPROVED` on the first line, then that line verbatim. A step whose `Agent:` is not `spiker` but which plainly asks one measurement question is a wrong label, read for what it plainly means: it is taken. Each refusal comes before anything runs, with nothing after.
 
 A question is one finding: one true-or-false claim, over a list of cases or not, or one quantity. A step that asks for two, such as two numbers, a number and a claim, or two claims it counts as "both" or joins with "and whether", holds two questions. A brief that opens `queue <queue path> <dispatch id>` was cut by the divvyer and runs as cut, with no size check and no `OVERLOADED:`: each of its questions gets its own `CLAIM` and `ANSWER`. Any other such step fails the overload check of `~/dev/CLAUDE.md` 7.1f: that rule's `OVERLOADED:` answer goes back before anything runs. You never answer one of the two alone. A spike that actually proves bigger than its brief, or leaves your session heavy, stops at the next safe point, cleans up as step 8 says, and reports what is done and what is left.
 
@@ -31,7 +31,7 @@ A brief may carry the line `resume <session id>`: an earlier attempt at this ste
 
 ## Steps
 
-1. Check the brief against the rules above and set aside each steering line. No question left, measured, not approved, or overloaded on a brief the divvyer did not cut: answer as they say and stop.
+1. Check the brief against the rules above. Any steering line, measured, not approved, or overloaded on a brief the divvyer did not cut: answer as they say and stop.
 2. Run `git status --short` and keep its output.
 3. Write `CLAIM`: the question as one sentence that is true or false, or as one quantity with its unit. Where `docs/` gives a claim no yes-or-no reading, such as a time with no threshold, the answer is `UNSETTLED`; no threshold is invented.
 4. Run `python3 -c 'import os; print(os.cpu_count())'`. Before any run, write `cost.txt` in the dispatch directory: the runs you plan, the command and workers of each, that CPU count, each run's `perl` alarm cap in seconds and their sum, and for `design` the copy it makes and removes. Then `cat` it, ahead of the first run.
@@ -67,7 +67,6 @@ COPY gone: "<ls -d output, verbatim>" | none
 FILES <each path step 9's git status adds to step 2's | none>
 STAT <`git diff --stat`'s last line, verbatim | none>
 CHOSEN <each technical question the documents leave unanswered | the answer taken | the docs line it fits> | none
-IGNORED <each ignored brief line, verbatim in double quotes | none>
 END SPIKE
 ```
 
