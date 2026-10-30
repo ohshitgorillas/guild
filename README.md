@@ -8,6 +8,7 @@ Guild is the shared roster of Claude Code subagents that Relay and Gauntlet disp
 2. `divvyer` cuts the approved design into the queue a build runs from, and re-cuts a section or step after a stop.
 3. `researcher` maps one queue section's code before its lead starts, fanning the files out to `reader` agents in parallel and stitching their pointers into one map.
 4. `lead` runs the section in its own worktree: `test-writer` writes the red tests, `builder` or a specialist (`core-builder`, `seamstress`, `gatesmith`) makes them pass, `diff-reviewer` and `test-reviewer` review each diff blind, and `mutant-hunter` kills surviving mutants.
+   The lead never decides what a failure means: a failed gate or test run, a refused, killed or status-less worker, or a review with findings goes to `assayer`, and the lead acts on its verdict (retry, retry with a note, recut, baseline or escalate).
 5. `spiker` answers a measurement question by experiment, `juror` judges a Foreman check that cannot reach green, and `role-author` writes the role prompts in this repository.
 
 ## Agents
@@ -18,7 +19,8 @@ Guild is the shared roster of Claude Code subagents that Relay and Gauntlet disp
 | `divvyer` | Cuts an approved design into the build queue, and re-cuts it after a stop. | read, write, Bash | opus | medium |
 | `researcher` | Relay: maps one queue section's code before its lead starts, as `path:line` pointers; answers follow-ups from `relay ask`. | read, Bash, dispatches `reader` only | (inherits) | medium |
 | `reader` | Reads one group of files for `researcher` and returns at most 40 lines of `path:line` pointers. | read-only | opus | medium |
-| `lead` | Runs one workstream in its own worktree: dispatches workers, re-runs done-checks, commits; also rules on a stopped Foreman group. | read, Bash, dispatches agents, Terminus | claude-sonnet-5-5 | medium |
+| `lead` | Runs one workstream in its own worktree: dispatches workers, re-runs done-checks, commits; sends every failure to `assayer`. | read, Bash, dispatches agents, Terminus | claude-sonnet-5-5 | medium |
+| `assayer` | Read-only judge of a failure in a section: returns RETRY, RETRY-WITH-NOTE, RECUT, BASELINE or ESCALATE; also rules on a stopped Foreman group. | read, read-only git | claude-opus-5-5 | medium |
 | `builder` | Builds one Order step of an approved design within the paths it lists. | read, write, Bash, Terminus | sonnet | medium |
 | `core-builder` | Gauntlet: builds one step in the pure layer, `gauntlet/core/`. | read, write, Bash, Terminus | sonnet | medium |
 | `seamstress` | Gauntlet: builds one step in the thin I/O layer, `gauntlet/seams/`. | read, write, Bash, Terminus | sonnet | medium |
