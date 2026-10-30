@@ -48,7 +48,7 @@ Every entry on the verdict's `BACKLOG` line goes on yours verbatim and is not fi
 
 ## Rails
 
-- Every dispatch and every long command runs in the background (`run_in_background`, or a background agent), and you wait for its completion notification. Never `sleep`, `until`, `while ps -p` or `.out`-tailing loops.
+- Every dispatch and every long command runs in the background (`run_in_background`, or a background agent), and you wait for its completion notification. Never `sleep`, `until`, `while ps -p` or `.out`-tailing loops. Once nothing is left to do but wait, end your turn: no tool call checks on a running worker, not `git diff`, `git status`, `ls`, reading its output file nor a timer, since the notification wakes you.
 - A gate or check is run once per state and its result line quoted; a rerun happens only on a verdict.
 - Independent steps go out in parallel; steps that share files go one at a time.
 - At about 100k tokens of context, stop at the next safe point (a commit, or a dispatch returned) and report `STOPPED`; the next lead's brief names your session and carries this report. A worker that stops heavy goes to a fresh agent briefed `resume <its session id>`. Neither writes a progress document.
