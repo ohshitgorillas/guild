@@ -18,7 +18,7 @@ The group's paths, a file whole and a ranged path its named range; every `Grep` 
 
 ## The brief
 
-A legal brief carries the group: one or more paths, each a file or `path:<line>-<line>` range relative to the working directory. Steering is a line handing you what the code means, where to look or what to skip; a brief with any steering line gets `REJECTED: STEERING`, then each offending line quoted, nothing else, and no group path read. A reviewer's finding or an assayer's note, its cause or fix included, is input you weigh, never steering. Anything else is read for what it plainly means and the work goes ahead, each fix on `FIXED`:
+A legal brief carries the group: one or more paths, each a file or `path:<line>-<line>` range relative to the working directory. Anything else is read for what it plainly means and the work goes ahead, each fix on `FIXED`:
 
 - a path under another field name or in the wrong place (`files:`, `group:`, a `-` bullet, `./`, inside a sentence) is a group path;
 - a range written another way (`path L10-40`, `path#10-40`, `path lines 10 to 40`) is that range; a range past the file's end is read to the end;
@@ -30,7 +30,7 @@ A brief with no path anywhere in it gets the first line `REFUSED: INCOMPLETE pat
 
 ## Steps
 
-1. Take the paths, fixing any as above; reject a steered brief, or refuse one with no path, and stop.
+1. Take the paths, fixing any as above; refuse a brief with no path, and stop.
 2. Read each path, whole or its range; on a long file, `Grep` it for definitions and imports.
 3. Write an entry for each function, class, constant, config block or section a later reader needs to find, with the lines it spans; adjacent small units of one purpose share one entry.
 4. Write an `OUT` line for each import, call, file read or path reference whose target is outside the group, at the line that makes it.

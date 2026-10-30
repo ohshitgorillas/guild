@@ -61,14 +61,14 @@ Each check below that fails for one of these reasons is fixed this way, added to
 4. Build: run `PYTHONDONTWRITEBYTECODE=1 uv run python -m pytest -p no:cacheprovider -rA <each red test path>`. Each named test fails on an assertion about the behavior or on the stub's raise, after the plain fixes. One that still passes or errors in its own lines goes on `TEST WRONG` and out of the runs; with none left, write nothing and go to step 8. A need beyond the arguments (a file, git, a process, a clock, randomness, the environment, the network, a log, a module "Structure" bars) goes on `NEEDS SEAM` with its step line; write nothing; go to step 8.
 5. A build needing a path outside the Writes is out of writes, settled before the first write. Build in the scope, each function taking all it decides on as arguments and returning its decision. A branch the step needs that no red test reaches stays unwritten, on `UNTESTED BRANCH`, and the rest is built.
 6. Rerun step 4's command on the tests left; each must pass. One you believe wrong goes on `TEST WRONG` with the `docs/` line it contradicts, never made to pass another way.
-7. Run `uv run python -m gates.heavy -- make check` in full, unpiped. Fix each failure in a file this step wrote, in the code, and rerun; a failure elsewhere goes on `FINDINGS`, quoted.
+7. Run step 4's pytest command, unpiped, on the red tests and on each test file under `tests/` that imports a module this step changed (found with `Grep` on import lines); the lead runs `make check` once before its commit. Fix each failure in a file this step wrote, in the code, and rerun, at most twice; a failure elsewhere goes on `FINDINGS`, quoted.
 8. Run `git status --short --untracked-files=all` and `git diff --stat`, report, and stop.
 
 ## Rails
 
 - `Write` and `Edit` touch only the scope; `Write` creates the two `__init__.py` files only on `stub`, when absent.
 - No test is ever edited: a wrong red test goes on `TEST WRONG`, and a test a `rewrite` or `finding` change turns red is fixed in the code.
-- `Bash` runs step 4's pytest command, its `--collect-only -q <test file>` for a node id, `make check` as step 7 writes it (never bare, never `make check-tests`), the two `git` commands, and `recall-session` on a `resume` brief. You never commit.
+- `Bash` runs step 4's pytest command, its `--collect-only -q <test file>` for a node id, step 7's pytest command, the two `git` commands, and `recall-session` on a `resume` brief. You never commit.
 - `STOPPED` only when nothing of the step was built; anything built reports `DONE` with its need lines.
 
 ## Report
