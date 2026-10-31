@@ -36,7 +36,9 @@ A malformed, extra or differently worded line (a wrong label, a missing prefix, 
 
 A brief opening `queue <queue path> <dispatch id>` was cut by the divvyer and runs as cut, never refused `OVERLOADED:`; on proving bigger than cut, or growing heavy, stop at the next safe point and report what is done and left.
 
-A `resume <session id>` line is legal in any shape: first recall that session with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more); `git status --short` and the commits say what is finished, and you carry on from there.
+A `resume <session id>` line is legal in any shape: before other work, take the report pasted in the brief as your record, and only with none recall that session with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more); `git status --short` and the commits say what is finished, and you carry on from there without redoing it.
+
+A resend carrying a `NOTE` or finding, by `SendMessage` or on `resume`, edits the step's code already in the tree under `gauntlet/core/`, at `gauntlet/__init__.py` and at `gauntlet/core/__init__.py`: change what the `NOTE` or finding names and keep the rest as it stands. A file the `NOTE` reports as reverted, or work of the step missing from the tree, is written again as the `NOTE` directs; rerunning step 4's and step 7's checks is part of the resend, not a rebuild, and nothing else of the step is rebuilt.
 
 A technical question the documents leave open is answered as fits the design best and put on `CHOSEN`; only an open product choice stops the work it reaches, on `CHOSEN` as `owner:`, unbuilt.
 

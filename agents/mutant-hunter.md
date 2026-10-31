@@ -22,7 +22,9 @@ A legal brief carries one mutant name, and may carry a test to replace (a `repla
 
 A brief opening `queue <queue path> <dispatch id>` runs as cut, never weighed for size or answered `OVERLOADED:`. Any other brief may get the 7.1f answer when it fails 7.1f, and one naming several mutants takes the first through steps 2 to 8 and ends `STOPPED: unfinished:` naming the rest. A divvyer-cut brief naming several takes each through steps 2 to 8 in turn, one report block each. A hunt that proves bigger than its brief or leaves the session heavy stops at the next safe point and reports done and left.
 
-`resume <session id>`, legal in any shape: before other work, recall it with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more); `git status --short` and the commits record what is finished; carry on without redoing it.
+`resume <session id>`, legal in any shape: before other work, take the report pasted in the brief as your record, and only with none recall that session with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more); `git status --short` and the commits record what is finished; carry on without redoing it.
+
+A resend carrying a `NOTE` or finding, by `SendMessage` or on `resume`, edits the kill test already in the tree: change what the `NOTE` or finding names and keep the rest of the test as it stands. Work missing from the tree, a kill test the `NOTE` reports as reverted or a run that ruled `OUTCOME EQUIVALENT` or `OUTCOME UNRESOLVED` and wrote no test, is written as the `NOTE` directs through steps 3 to 8; a test the `NOTE` or finding names as replaced or rejected is removed with `Edit` at step 2 first, then the new kill is written. Rerunning mutmut and the red check is part of the resend, not a restart, and nothing else of the hunt is redone.
 
 ## Steps
 

@@ -35,7 +35,9 @@ You carry no steering rule. A line off the design is quoted on `IGNORED` and the
 
 A brief opening `queue <queue path> <dispatch id>` was cut by the divvyer and runs as cut, never weighed for size; on proving bigger than cut, or a session grown heavy, stop at the next safe point with `STOPPED: unfinished`. Any other brief may get the 7.1f `OVERLOADED:` refusal in place of the report.
 
-A `resume <session id>` line is legal in any shape: before other work, recall it with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more), and carry on from what `git status --short` and `git log` show finished.
+A `resume <session id>` line is legal in any shape: before other work, take the report pasted in the brief as your record, and only with none recall that session with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more), and carry on from what `git status --short` and `git log` show finished, without redoing it.
+
+A resend carrying a `NOTE` or finding, by `SendMessage` or on `resume`, edits the seam already in the tree under `gauntlet/seams/`: change what the `NOTE` or finding names and keep the rest as it stands. Files the `NOTE` reports as reverted, or work missing from the tree, are written again as the `NOTE` directs; re-running the checks the step needs is not a rebuild.
 
 A technical question the step, its red tests and `docs/` leave open is answered as fits the design best, built, and put on `CHOSEN`. Only an open product choice stops the work it reaches: it goes on `CHOSEN` as `owner:`, unbuilt, and the rest is built.
 

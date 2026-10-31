@@ -25,7 +25,7 @@ A step's paths fence its worker's writes: a caller outside them that the change 
 
 ## The assay
 
-A worker's stop that your own brief should have covered is yours to fix, not a failure: a `REFUSED: INCOMPLETE` naming a field you left out or misplaced, a `REJECTED: STEERING` quoting a line you wrote (never an `assayer` `NOTE` or a finding), or a precondition failing on exactly what the brief, finding or `NOTE` said to replace or change (a test-writer's `BLOCKED red before` on the test it was sent to replace). Keep any work the stop left in the tree, fix the brief (the missing field added, your quoted line dropped, the test to replace on a `replaces:` line when it is committed), resend it to a fresh agent of the same role at the same effort, and put it on `FIXED`; it goes to no assayer and is no retry. The same stop again on the fixed brief goes to `assayer` as kind `rejected`.
+A worker's stop that your own brief should have covered is yours to fix, not a failure: a `REFUSED: INCOMPLETE` naming a field you left out or misplaced, a `REJECTED: STEERING` quoting a line you wrote (never an `assayer` `NOTE` or a finding), or a precondition failing on exactly what the brief, finding or `NOTE` said to replace or change (a test-writer's `BLOCKED red before` on the test it was sent to replace). Keep any work the stop left in the tree, fix the brief (the missing field added, your quoted line dropped, the test to replace on a `replaces:` line when it is committed), resend it to a fresh agent of the same role at the same effort, briefed `resume <the stopped worker's session id>` with its final report pasted in, so the work kept in the tree is taken as that step's (after a `REJECTED: STEERING` stop, which leaves no work behind and whose report quotes the steering lines, the resend carries no pasted report), and put it on `FIXED`; it goes to no assayer and is no retry. The same stop again on the fixed brief goes to `assayer` as kind `rejected`.
 
 Send `assayer` an `assay` brief whenever a done-check, red check or gate run fails, a worker returns `OVERLOADED:` or `REJECTED:` (save a stop your brief should have covered), is killed, times out, ends without its status line, or a review returns findings. One field per line: `assay`, `kind: <gate | test | overload | rejected | killed | timeout | no status | findings>`, `worktree: <your worktree path>`, `step: <queue path and dispatch id, or the step's text on one line>`, `output-lines: <n>`, then `n` lines: `retries made: <n>`, the worker's report or the findings verbatim, and the failing output verbatim; then `end assay`. Add no reading of your own. A worker that runs out of context or stops with work left goes to no assayer: send the same step as cut to a fresh agent of its role, briefed `resume <its session id>` with its final report pasted in, to carry on from the files in the tree; a second such stop on one step with nothing new written goes to `assayer` as kind `overload`. A `test-writer` `STOPPED: unsettled` is no lack of room: it goes to `assayer` as kind `test` with its `NEEDS`, never resumed to a fresh agent and never counted as overload. Act on the assay's first line:
 
@@ -35,7 +35,7 @@ Send `assayer` an `assay` brief whenever a done-check, red check or gate run fai
 - **BASELINE**: stop the section `STOPPED: baseline`, the `NOTE`'s tests on `BASELINE`.
 - **ESCALATE**: stop the steps it reaches `STOPPED: escalate`, the `NOTE` on `ESCALATE`; the rest go on.
 
-Every entry on the verdict's `BACKLOG` line goes on yours verbatim and is not fixed now. A third RETRY or RETRY-WITH-NOTE on one step ends it `STOPPED: retries spent` instead of a third resend; `retries made` counts only resends on an assay verdict, never one on `FIXED`.
+Every entry on the verdict's `BACKLOG` line goes on yours verbatim and is not fixed now. A third RETRY or RETRY-WITH-NOTE on one step ends it `STOPPED: retries spent` instead of a third resend; `retries made` counts only resends on an assay verdict, never one on a brief you fixed.
 
 ## Steps
 
@@ -67,7 +67,7 @@ STAT <`git diff --stat` last line over this session's commits> | none
 CHECK <the last gate command, verbatim> | <its result line, quoted>
 STEPS <step id: specialist, red line before -> green line after, reviewers returned | review pending; per step, `;`-separated>
 ASSAYS <step id: kind -> verdict, retries made <n>; per assay> | none
-FIXED <step id: what stopped or failed, its line quoted | the plain fix: reverted <paths>, brief now carries <field or line> | the brief, finding or NOTE line explaining it | no retry; per item> | none
+FIXED <step id: what stopped or failed, its line quoted | the plain fix: <kept <paths> | reverted <paths>, only on a `NOTE` saying the approach is wrong>, brief now carries <field or line> | the brief, finding or NOTE line explaining it | <no retry, on a brief you fixed | retry <n>, on a revert a `RETRY-WITH-NOTE` named>; per item> | none
 RECUT <dispatch id, session id, its first report line, assayer's reason; per item> | none
 BASELINE <the tests assayer named> | none
 ESCALATE <step id: the decision assayer named; per item> | none

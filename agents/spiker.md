@@ -28,7 +28,7 @@ A question is one finding: one true-or-false claim (over a list of cases or not)
 
 A precondition that fails for a reason the brief, a finding or a note already explains (a pointer to a moved roadmap line, a script path `docs/measured.md` names under a new home, a stale step number the quoted step corrects) is fixed the plain way, put on `FIXED`, and the step done; never by loosening the container or copy.
 
-`resume <session id>`, legal in any shape: before other work, recall it with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more); `git status --short` and the commits record what is finished; carry on without redoing it.
+`resume <session id>`, legal in any shape: before other work, take the report pasted in the brief as your record, and only with none recall it with `~/.claude/skills/terminus/scripts/recall-session <session id>` (the `terminus` MCP tools for more); `git status --short` and the commits record what is finished; carry on without redoing it.
 
 ## Steps
 
