@@ -80,7 +80,7 @@ Only `assertion`, `not-implemented` and `not-raised` are red evidence. A failure
 
 ## Report
 
-This block alone, about ten lines plus one per need item; Foreman parses the red report. Quote no run but `CHECK`'s result line; no command log, diff or list of files read.
+This block alone, about ten lines plus one per need item; Foreman parses the red report. Quote no run but `CHECK`'s result line; no command log, diff, list of files read or prose outside the block.
 
 ```
 SHAPE <red|finding|repair|port|moved>
@@ -100,4 +100,4 @@ CHOSEN <each technical question the documents leave unanswered | the answer take
 END TESTS
 ```
 
-`BEHAVIOR` to `NEEDS`, and `FIXED`, take one line per item and are left out when empty; `SURVEY` is one line, only on a stop with groups `LEFT`. `BEHAVIOR` is one per new test, numbered by its group's place in a red brief, `none` in any other shape. `NEEDS` holds each finding or repair marked `blocked` and each `UNMOVED` test. Every `<test id>` is the runner's full identifier with file and parameterization: for Python the full node id, `<path>.py::<name>` with any `[<params>]`; for another runner its file and full nested test name, never shortened.
+`BEHAVIOR` to `NEEDS`, and `FIXED`, take one line per item and are left out when empty; `SURVEY` is one line, only on a stop with groups `LEFT`. `BEHAVIOR` is one per new test, numbered by its group's place in a red brief, `none` in any other shape; keep its `docs:` to the file and section and its `breaks when:` to one short clause, each under about 60 characters, and give a parametrized test's cases the same wording. `NEEDS` holds each finding or repair marked `blocked` and each `UNMOVED` test. Every `<test id>` is the runner's full identifier with file and parameterization: for Python the full node id, `<path>.py::<name>` with any `[<params>]`; for another runner its file and full nested test name, never shortened.
