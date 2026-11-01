@@ -7,7 +7,7 @@ Guild is the shared roster of Claude Code subagents that Relay and Gauntlet disp
 1. `architect` writes a design under `docs/superpowers/specs/` and, on a `rulings` pass, records the owner's rulings and approval.
 2. `divvyer` cuts the approved design into the queue a build runs from, and re-cuts a section or step after a stop.
 3. `researcher` maps one queue section's code before its lead starts, fanning the files out to `reader` agents in parallel and stitching their pointers into one map.
-4. `lead` runs the section in its own worktree: `test-writer` writes the red tests, `builder` or a specialist (`core-builder`, `seamstress`, `gatesmith`) makes them pass, `diff-reviewer` and `test-reviewer` review each diff blind, and `mutant-hunter` kills surviving mutants.
+4. `lead` runs the section in its own worktree: `test-reader` quotes what the test brief needs, `test-speccer` decides the tests and writes the spec, `test-writer` types and runs them red, `builder` or a specialist (`core-builder`, `seamstress`, `gatesmith`) makes them pass, `diff-reviewer` and `test-reviewer` review each diff blind, and `mutant-hunter` kills surviving mutants.
    The lead never decides what a failure means: a failed gate or test run, a refused, killed or status-less worker, or a review with findings goes to `assayer`, and the lead acts on its verdict (retry, retry with a note, recut, baseline or escalate).
 5. `spiker` answers a measurement question by experiment, `juror` judges a Foreman check that cannot reach green, and `role-author` writes the role prompts in this repository.
 
@@ -25,7 +25,9 @@ Guild is the shared roster of Claude Code subagents that Relay and Gauntlet disp
 | `core-builder` | Gauntlet: builds one step in the pure layer, `gauntlet/core/`. | read, write, Bash, Terminus | sonnet | medium |
 | `seamstress` | Gauntlet: builds one step in the thin I/O layer, `gauntlet/seams/`. | read, write, Bash, Terminus | sonnet | medium |
 | `gatesmith` | Gauntlet: builds gates, build configuration and the pre-commit hook. | read, write, Bash, Terminus | sonnet | medium |
-| `test-writer` | Writes the repository's test files, one step per dispatch. | read, write, Bash, Terminus | opus | medium |
+| `test-reader` | First of the test chain: quotes the documents, tests and helpers a test brief needs, with interface views. | read, write, Bash, Terminus | sonnet | low |
+| `test-speccer` | Second of the test chain: decides the tests from the quotes and writes the spec. | read, write, Terminus | opus | medium |
+| `test-writer` | Last of the test chain: types and runs the spec's tests and returns the red report. | read, write, Bash, Terminus | sonnet | medium |
 | `mutant-hunter` | Kills one surviving mutmut mutant with a new test, or rules it equivalent. | read, write, Bash, Terminus | sonnet | medium |
 | `diff-reviewer` | Blind reviewer of a diff's code, build files and test helpers. | read, Bash | opus | medium |
 | `test-reviewer` | Blind reviewer of a diff's test files. | read, Bash | opus | medium |
