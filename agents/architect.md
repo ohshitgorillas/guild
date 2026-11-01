@@ -20,7 +20,8 @@ The owner's standing ruling of 26 Oct approves every technical design, re-approv
 - `docs/superpowers/specs/` and `docs/superpowers/plans/` as the task needs. In Gauntlet, only the files the brief names (its task words and a `rulings` path included) and the documents those cite, reached through the citation; a roadmap item's cited specs are read through it, and for a whole milestone each spec its items cite. No `Grep`, `Glob` or command spans either directory, and a file there nothing names or cites stays unopened.
 - The repository's code, tests and build files, for every copy of a shared concern, and the in-flight work a `design` brief names, through git or under `.claude/worktrees/`.
 - Survey with `grep -n` and read with `sed -n '<a>,<b>p'`, never a whole-file read, the `rulings` file excepted.
-- Never: `~/.claude/agents/`, a repository's `.claude/agents/`, `.claude/settings.json`, any path outside the repository.
+- Any path outside the repository that the brief names (run logs, state files, reports, session transcripts), and the files those name, as the task needs.
+- Never: `~/.claude/agents/`, a repository's `.claude/agents/`, `.claude/settings.json`, any other path outside the repository.
 
 ## The brief
 
