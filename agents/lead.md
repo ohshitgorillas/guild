@@ -25,18 +25,34 @@ A step's paths fence its worker's writes: a caller outside them that the change 
 
 ## The test chain
 
-Every test brief, `red`, `finding`, `repair`, `port` or `moved`, runs as three dispatches in order: a queue line or roster entry naming `test-writer`, a `repair` or `finding` brief you write, and a `NOTE` resend alike. Its handoff directory is `<your scratchpad>/test-chain/<dispatch id, or the step id when uncut>/`, an absolute path, never inside a worktree and never committed. Each brief carries the brief's `queue` line first and its `resume` line, and carries paths, never quote or spec text.
+Every test brief runs as its shape's chain, in order: a queue line or roster entry naming `test-writer`, a `repair` or `finding` brief you write, and a `NOTE` resend alike.
 
-1. `test-reader`: the test brief verbatim, plus `handoff: <dir>`. It writes `<dir>/quotes.md` and ends `END READ`.
-2. `test-speccer`: the test brief verbatim, plus `quotes: <dir>/quotes.md` and `handoff: <dir>`. It checks the brief, writes `<dir>/spec.md` and ends `END SPEC`.
-3. `test-writer`: `spec: <dir>/spec.md`, `worktree: <your worktree path>` and `check: <the step's done-check>`. It writes and runs the tests and ends `END TESTS`, the step's red report.
+| Shape | Dispatches |
+|---|---|
+| `red`, `finding`, `repair` | `test-reader`, `test-speccer`, `test-writer` |
+| `port`, `moved` | `test-reader`, then `test-writer`; no `spec.md` is written |
+
+Its handoff directory is `<your scratchpad>/test-chain/<dispatch id, or the step id when uncut>/`, an absolute path, never inside a worktree and never committed. Each brief carries the brief's `queue` line first and its `resume` line, and carries paths, never quote or spec text.
+
+1. `test-reader`, every shape: the test brief verbatim, plus `handoff: <dir>`. It writes `<dir>/quotes.md` and ends `END READ`.
+2. `test-speccer`, `red`, `finding` and `repair` only: the test brief verbatim, plus `quotes: <dir>/quotes.md` and `handoff: <dir>`. It checks the brief, writes `<dir>/spec.md` and ends `END SPEC`.
+3. `test-writer`: for `red`, `finding` and `repair`, `spec: <dir>/spec.md`; for `port` and `moved`, the test brief verbatim plus `quotes: <dir>/quotes.md`; in every shape, `worktree: <your worktree path>` and `check: <the step's done-check>`. It writes and runs the tests and ends `END TESTS`, the step's red report.
 
 A same-agent send below goes by `SendMessage` while that agent has room, as **RETRY-WITH-NOTE** defines it, else to a fresh agent of its role briefed `resume <its session id>` with its report pasted in.
 
-- A `test-reader` `STOPPED: view` leaves its quotes standing, and the chain goes on to the speccer. A reader or speccer `STOPPED: heavy` is a worker out of context, as in The assay.
+- A `test-reader` `STOPPED: view` leaves its quotes standing, and the chain goes on to its next dispatch. A reader or speccer `STOPPED: heavy` is a worker out of context, as in The assay.
 - A `test-speccer` `REJECTED: STEERING`, `REFUSED: INCOMPLETE` or `OVERLOADED:` is handled as a `test-writer` stop is, in The assay. Its `STOPPED: read` sends the same `test-reader` its `read:` lines, then the speccer the new quotes by `SendMessage`.
 - A `test-writer` `STOPPED: spec` goes to the same `test-speccer` with the writer's report; the amended spec then goes to the same `test-writer` as `spec amended`, by the same rule. A second `STOPPED: spec` naming a spec line already amended goes to `assayer` as kind `test`.
-- A `RETRY-WITH-NOTE` or a finding on test files goes to the step's `test-speccer` first, then the amended spec to its `test-writer` as `spec amended`; a test brief with no speccer of its own in this section runs the whole chain.
+- A `port` or `moved` writer's `NEEDS <doc path:line> | respec: <test ids>` line becomes a `red` brief, run as the three-dispatch chain in the same section and before the commit, with one group per respec entry and every `view:` line of the moved brief as written:
+  ```
+  red
+  behavior: <the entry's after text, verbatim>
+  view: <each view: line of the moved brief>
+  replaces: <each test id on the respec line>
+  ```
+- A `NEEDS ... | unmoved:` or `NEEDS ... | blocked:` from a `port` or `moved` writer goes to `assayer` as kind `test`.
+- A `RETRY-WITH-NOTE` on a `red`, `finding` or `repair` step, or a finding on its test files, goes to the step's `test-speccer` first, then the amended spec to its `test-writer` as `spec amended`; a test brief with no speccer of its own in this section runs the whole chain.
+- A `RETRY-WITH-NOTE` on a `port` or `moved` step goes to its `test-writer` by the same-agent rule, with the `NOTE` verbatim; the writer applies it within its shape's rule and puts what the rule cannot carry on `NEEDS ... | blocked:`. A finding on such a step's test files runs as a `finding` brief through the three-dispatch chain.
 - A writer's `STOPPED: unsettled`, `BLOCKED red before` and the `CHECK` re-run are taken from the writer's report, as in The assay and step 2.
 
 ## The assay
@@ -46,7 +62,7 @@ A worker's stop that your own brief should have covered is yours to fix, not a f
 Send `assayer` an `assay` brief whenever a done-check, red check or gate run fails, a worker returns `OVERLOADED:` or `REJECTED:` (save a stop your brief should have covered), is killed, times out, ends without its status line, or a review returns findings. One field per line: `assay`, `kind: <gate | test | overload | rejected | killed | timeout | no status | findings>`, `worktree: <your worktree path>`, `step: <queue path and dispatch id, or the step's text on one line>`, `output-lines: <n>`, then `n` lines: `retries made: <n>`, the worker's report or the findings verbatim, and the failing output verbatim; then `end assay`. Add no reading of your own. A worker that runs out of context or stops with work left goes to no assayer: send the same step as cut to a fresh agent of its role, briefed `resume <its session id>` with its final report pasted in, to carry on from the files in the tree; a second such stop on one step with nothing new written goes to `assayer` as kind `overload`. A `test-writer` `STOPPED: unsettled` is no lack of room: it goes to `assayer` as kind `test` with its `NEEDS`, never resumed to a fresh agent and never counted as overload. Act on the assay's first line:
 
 - **RETRY**: resend the same step unchanged, at its usual effort.
-- **RETRY-WITH-NOTE**: unless `NOTE` reads `no finding blocks`, the fix is made to the step's work in the tree, which stays. Revert only when `NOTE` says the approach itself is wrong, and then only the files it names (`git restore --source=HEAD --staged --worktree -- <tracked paths>`, `git clean -f -- <new paths>`), listed on `FIXED`. Resend the step to the worker that owns the files the `NOTE` names, with the `NOTE` added, to edit that work in place (on test files, to its `test-speccer` and then its `test-writer`, as in The test chain): by `SendMessage` to that same agent while it has room, not stopped heavy or out of context and under about 70k tokens on its completion notice (one `effort` level above its role file's when `SendMessage` carries it), else a fresh agent of its role one `effort` level above its role file's, briefed `resume <its session id>` with its report pasted in; the next send returns to the role file's `effort`. When `NOTE` reads `no finding blocks`, resend and rerun nothing.
+- **RETRY-WITH-NOTE**: unless `NOTE` reads `no finding blocks`, the fix is made to the step's work in the tree, which stays. Revert only when `NOTE` says the approach itself is wrong, and then only the files it names (`git restore --source=HEAD --staged --worktree -- <tracked paths>`, `git clean -f -- <new paths>`), listed on `FIXED`. Resend the step to the worker that owns the files the `NOTE` names, with the `NOTE` added, to edit that work in place (on test files, as The test chain routes it by shape): by `SendMessage` to that same agent while it has room, not stopped heavy or out of context and under about 70k tokens on its completion notice (one `effort` level above its role file's when `SendMessage` carries it), else a fresh agent of its role one `effort` level above its role file's, briefed `resume <its session id>` with its report pasted in; the next send returns to the role file's `effort`. When `NOTE` reads `no finding blocks`, resend and rerun nothing.
 - **RECUT**: the dispatch goes on `RECUT` with the `NOTE` as reason, for the divvyer's `recut`.
 - **BASELINE**: stop the section `STOPPED: baseline`, the `NOTE`'s tests on `BASELINE`.
 - **ESCALATE**: stop the steps it reaches `STOPPED: escalate`, the `NOTE` on `ESCALATE`; the rest go on.
